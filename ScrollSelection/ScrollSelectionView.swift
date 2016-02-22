@@ -20,6 +20,7 @@ protocol ScrollSelectionViewDelegate: class {
 class ScrollSelectionView: UIView, UIScrollViewDelegate {
     
     var scrollView: UIScrollView!
+    var count = Int()
     weak var delegate: ScrollSelectionViewDelegate?
     var currentPage: Int {
         let width = scrollView.frame.size.width;
@@ -28,7 +29,6 @@ class ScrollSelectionView: UIView, UIScrollViewDelegate {
         
         return pageInt
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -56,10 +56,18 @@ class ScrollSelectionView: UIView, UIScrollViewDelegate {
         addConstraint(constraint)
     }
     
-
+    func setCurrentPage(pageNumber: Int, animated: Bool) {
+        if pageNumber < count {
+            let xOffset = (kImageSize + kBufferWidth * 2.0) * CGFloat(pageNumber)
+            let scrollPoint = CGPointMake(xOffset, 0.0)
+            scrollView.setContentOffset(scrollPoint, animated: animated)
+            delegate?.scrollSelectionView(self, didChangeTo: pageNumber)
+        }
+    }
+    
     func setUpScrollViewWithImageViews(imageViews: [UIImageView]) {
         
-        let count = imageViews.count
+        count = imageViews.count
         
         for index in 0 ..< count {
             let imageView = imageViews[index]

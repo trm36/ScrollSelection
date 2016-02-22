@@ -34,6 +34,8 @@ class ViewController: UIViewController, ScrollSelectionViewDelegate {
         
         playerSelectionView.setUpScrollViewWithImageViews(imageViews)
         
+        playerSelectionView.setCurrentPage(1, animated: true)
+        
     }
 
     override func didReceiveMemoryWarning() {
